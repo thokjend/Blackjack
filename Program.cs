@@ -19,7 +19,7 @@
             game.CalculateStartingHandsValue();
             game.DealerDraw();
 
-            while (game._playerCardsSum < 21)
+            while (game.PlayerCardsSum < 21)
             {
                 MyConsole.Write("do you want to draw or stay? (d/s)");
                 string action = Console.ReadLine();

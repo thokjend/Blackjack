@@ -6,8 +6,8 @@
         private readonly Deck _deck;
         private readonly Hand _dealerHand;
         private readonly Hand _playerHand;
-        public int _playerCardsSum { get; private set; }
-        private int _dealerCardsSum;
+        public int PlayerCardsSum { get; private set; }
+        public int DealerCardsSum { get; private set; }
 
         public Game()
         {
@@ -26,23 +26,23 @@
 
         public void DealerDraw()
         {
-            while (_dealerCardsSum < 17)
+            while (DealerCardsSum < 17)
             {
                 _dealerHand.Draw(_deck);
-                _dealerCardsSum = _dealerHand.CalculateValue();
+                DealerCardsSum = _dealerHand.CalculateValue();
             }
         }
 
         public void CalculateStartingHandsValue()
         {
-            _playerCardsSum = _playerHand.CalculateValue();
-            _dealerCardsSum = _dealerHand.CalculateValue();
+            PlayerCardsSum = _playerHand.CalculateValue();
+            DealerCardsSum = _dealerHand.CalculateValue();
         }
 
         public void DrawCard()
         {
             _playerHand.Draw(_deck);
-            _playerCardsSum = _playerHand.CalculateValue();
+            PlayerCardsSum = _playerHand.CalculateValue();
             MyConsole.Write($"Your cards: ");
             _playerHand.Show();
             MyConsole.LineBreak();
@@ -50,23 +50,23 @@
 
         public void End()
         {
-            Console.WriteLine($"Dealer has a total of {_dealerCardsSum} with these cards:");
+            Console.WriteLine($"Dealer has a total of {DealerCardsSum} with these cards:");
             _dealerHand.Show();
             MyConsole.LineBreak();
-            Console.WriteLine($"You have a total of {_playerCardsSum} with these cards:");
+            Console.WriteLine($"You have a total of {PlayerCardsSum} with these cards:");
             _playerHand.Show();
         }
 
 
         public void checkIfWinOrBust()
         {
-            if (_playerCardsSum > _dealerCardsSum && _playerCardsSum < 21) { MyConsole.Write("You won!"); }
-            else if (_playerCardsSum == 21) { MyConsole.Write("Blackjack, you won!"); }
-            else if (_playerCardsSum > 21) { MyConsole.Write("Bust, dealer wins!"); }
-            else if (_playerCardsSum > 21) { MyConsole.Write("Dealer Bust, you won!"); }
-            else if (_playerCardsSum == _dealerCardsSum) { MyConsole.Write("Draw!"); }
-            else if (_dealerCardsSum == 21) { MyConsole.Write("Dealer has Blackjack!, you lose!"); }
-            else if (_playerCardsSum < _dealerCardsSum) { MyConsole.Write("You lose!"); }
+            if (PlayerCardsSum > DealerCardsSum && PlayerCardsSum < 21) { MyConsole.Write("You won!"); }
+            else if (PlayerCardsSum == 21) { MyConsole.Write("Blackjack, you won!"); }
+            else if (PlayerCardsSum > 21) { MyConsole.Write("Bust, dealer wins!"); }
+            else if (PlayerCardsSum > 21) { MyConsole.Write("Dealer Bust, you won!"); }
+            else if (PlayerCardsSum == DealerCardsSum) { MyConsole.Write("Draw!"); }
+            else if (DealerCardsSum == 21) { MyConsole.Write("Dealer has Blackjack!, you lose!"); }
+            else if (PlayerCardsSum < DealerCardsSum) { MyConsole.Write("You lose!"); }
         }
 
     }
