@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace Blackjack
 {
     internal class Program
-    {
-        static readonly Random Random = new Random();
+    { 
         static void Main(string[] args)
         {
 
@@ -19,148 +19,53 @@ namespace Blackjack
                 6. Add blackjack rules
              */
 
-            List<string> deck = makeDeck();
-            List<string> dealerCards = dealStartingCards(deck);
-            List<string> playerCards = dealStartingCards(deck);
+            var game = new Game();
+            var deck = new Deck();
+            var drawStartingCards = new Hand(deck.DrawStartingHand());
+            var dealerHand = drawStartingCards;
+            var playerHand = drawStartingCards;
 
-            Console.WriteLine($"Dealer cards: X, {dealerCards[1]}");
+            Console.WriteLine($"Dealer cards: X, {dealerHand.GetHand()[1]}");
             Console.WriteLine($"Your cards: ");
-
-            showCards(playerCards);
+            playerHand.Show();
             Console.WriteLine("");
 
-            int playerSum = CalculateHandValue(playerCards);
-            int dealerSum = CalculateHandValue(dealerCards);
+            int playerCardsSum = playerHand.CalculateValue();
+            int dealerCardsSum = dealerHand.CalculateValue();
 
-            while (dealerSum < 17)
+            while (dealerCardsSum < 17) 
             {
-                dealerSum = dealCard(dealerCards, deck);
+                dealerHand.Draw(deck);
+                dealerCardsSum = dealerHand.CalculateValue();
             }
 
-            while (playerSum < 21)
+            while (playerCardsSum < 21)
             {
                 Console.WriteLine("do you want to draw or stay? (d/s)");
 
                 string action = Console.ReadLine();
                 if (action == "d")
                 {
-                    playerSum = dealCard(playerCards, deck);
+                    playerHand.Draw(deck);
+                    playerCardsSum = playerHand.CalculateValue();
                     Console.WriteLine($"Your cards: ");
-                    showCards(playerCards);
+                    playerHand.Show();
                     Console.WriteLine("");
                 }
 
                 if (action == "s")
                 {
-                    Console.WriteLine($"Dealer has a total of {dealerSum} with these cards:");
-                    showCards(dealerCards);
+                    Console.WriteLine($"Dealer has a total of {dealerCardsSum} with these cards:");
+                    dealerHand.Show();
                     Console.WriteLine("");
-                    Console.WriteLine($"You have a total of {playerSum} with these cards:");
-                    showCards(playerCards);
+                    Console.WriteLine($"You have a total of {playerCardsSum} with these cards:");
+                    playerHand.Show();
                     break;
                 }
             }
 
             Console.WriteLine("");
-            checkIfWinOrBust(playerSum, dealerSum);
-        }
-
-        static void checkIfWinOrBust(int playerScore, int dealerScore)
-        {
-            if (playerScore > dealerScore && playerScore < 21) { Console.WriteLine("You won!"); }
-            else if (dealerScore > 21) { Console.WriteLine("Dealer Bust, you won!");}
-            else if (playerScore > 21) { Console.WriteLine("Bust, dealer wins!"); }
-            else if (playerScore == dealerScore) { Console.WriteLine("Draw!"); }
-            else if (dealerScore == 21) { Console.WriteLine("Dealer has Blackjack!, you lose!"); }
-            else if (playerScore < dealerScore && playerScore < 21) { Console.WriteLine("You lose!");}
-            else if (playerScore == 21) { Console.WriteLine("Blackjack, you won!");}
-            
-        }
-
-        static int dealCard(List<string> cards, List<string> deck)
-        {
-            int sum = 0;
-            cards.Add(deck[deck.Count - 1]);
-            deck.Remove(deck[deck.Count - 1]);
-            sum = CalculateHandValue(cards);
-
-            return sum;
-        }
-
-        static void showCards(List<string> hand)
-        {
-            foreach (var card in hand)
-            {
-                Console.WriteLine($"[{card}] ");
-            }
-        }
-
-        static int CalculateHandValue(List<string> hand)
-        {
-            int sum = 0;
-            int numAces = 0;
-
-            foreach (var card in hand)
-            {
-                string[] cardValue = card.Split("of");
-                string cardName = cardValue[0].Trim();
-                if (Enum.TryParse<cardValues>(cardName, out cardValues value))
-                {
-                    if (value == cardValues.Ace)
-                    {
-                        numAces++;
-                    }
-                    else
-                    {
-                        sum += (int)value;
-                    }
-                }
-            }
-
-            for (int i = 0; i < numAces; i++)
-            {
-                if (sum + 11 <= 21)
-                {
-                    sum += 11; // Add 11 if it keeps the total below or equal to 21
-                }
-                else
-                {
-                    sum += 1; // Otherwise, add 1
-                }
-            }
-
-            return sum;
-        }
-
-        static List<string> dealStartingCards(List<string> deck)
-        {
-            List<string> cards = new List<string>();
-            while (cards.Count < 2)
-            {
-                cards.Add(deck[deck.Count - 1]);
-                deck.Remove(deck[deck.Count - 1]);
-            }
-
-            return cards;
-        }
-
-
-        static List<string> makeDeck()
-        {
-            List<string> deck = new List<string>();
-            List<string> suits = new List<string> { "Spades", "Hearts", "Diamonds", "Clubs" };
-
-            foreach (var suit in suits)
-            {
-                foreach (var card in Enum.GetNames(typeof(cardValues)))
-                {
-                    deck.Add($"{card} of {suit}");
-                }
-            }
-
-            List<string> shuffledDeck = deck.OrderBy(x => Random.Next()).ToList();
-
-            return shuffledDeck;
+            game.checkIfWinOrBust(playerCardsSum, dealerCardsSum);
         }
 
     }
