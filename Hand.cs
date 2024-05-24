@@ -2,7 +2,7 @@
 {
     internal class Hand
     {
-        private List<string> _hand;
+        private readonly List<string> _hand;
         
         public Hand(List<string> initialCards)
         {

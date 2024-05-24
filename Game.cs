@@ -63,10 +63,10 @@
             if (PlayerCardsSum > DealerCardsSum && PlayerCardsSum < 21) { MyConsole.Write("You won!"); }
             else if (PlayerCardsSum == 21) { MyConsole.Write("Blackjack, you won!"); }
             else if (PlayerCardsSum > 21) { MyConsole.Write("Bust, dealer wins!"); }
-            else if (PlayerCardsSum > 21) { MyConsole.Write("Dealer Bust, you won!"); }
+            else if (DealerCardsSum > 21) { MyConsole.Write("Dealer Bust, you won!"); }
             else if (PlayerCardsSum == DealerCardsSum) { MyConsole.Write("Draw!"); }
             else if (DealerCardsSum == 21) { MyConsole.Write("Dealer has Blackjack!, you lose!"); }
-            else if (PlayerCardsSum < DealerCardsSum) { MyConsole.Write("You lose!"); }
+            else if (PlayerCardsSum < DealerCardsSum && DealerCardsSum < 21) { MyConsole.Write("You lose!"); }
         }
 
     }

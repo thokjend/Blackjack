@@ -2,9 +2,9 @@
 {
     internal class Deck
     {
-        public List<string> deck;
-        public List<string> suits = new List<string> { "Spades", "Hearts", "Diamonds", "Clubs" };
-        readonly Random _random = new Random();
+        private List<string> deck;
+        private List<string> suits = new List<string> { "Spades", "Hearts", "Diamonds", "Clubs" };
+        private readonly Random _random = new Random();
 
         public Deck()
         {
