@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualBasic.CompilerServices;
-
-namespace Blackjack
+﻿namespace Blackjack
 {
     internal class Program
     { 
@@ -20,52 +15,29 @@ namespace Blackjack
              */
 
             var game = new Game();
-            var deck = new Deck();
-            var drawStartingCards = new Hand(deck.DrawStartingHand());
-            var dealerHand = drawStartingCards;
-            var playerHand = drawStartingCards;
+            game.ShowStartingHands();
+            game.CalculateStartingHandsValue();
+            game.DealerDraw();
 
-            Console.WriteLine($"Dealer cards: X, {dealerHand.GetHand()[1]}");
-            Console.WriteLine($"Your cards: ");
-            playerHand.Show();
-            Console.WriteLine("");
-
-            int playerCardsSum = playerHand.CalculateValue();
-            int dealerCardsSum = dealerHand.CalculateValue();
-
-            while (dealerCardsSum < 17) 
+            while (game._playerCardsSum < 21)
             {
-                dealerHand.Draw(deck);
-                dealerCardsSum = dealerHand.CalculateValue();
-            }
-
-            while (playerCardsSum < 21)
-            {
-                Console.WriteLine("do you want to draw or stay? (d/s)");
-
+                MyConsole.Write("do you want to draw or stay? (d/s)");
                 string action = Console.ReadLine();
+
                 if (action == "d")
                 {
-                    playerHand.Draw(deck);
-                    playerCardsSum = playerHand.CalculateValue();
-                    Console.WriteLine($"Your cards: ");
-                    playerHand.Show();
-                    Console.WriteLine("");
+                    game.DrawCard();
                 }
 
                 if (action == "s")
                 {
-                    Console.WriteLine($"Dealer has a total of {dealerCardsSum} with these cards:");
-                    dealerHand.Show();
-                    Console.WriteLine("");
-                    Console.WriteLine($"You have a total of {playerCardsSum} with these cards:");
-                    playerHand.Show();
+                    game.End();
                     break;
                 }
             }
 
-            Console.WriteLine("");
-            game.checkIfWinOrBust(playerCardsSum, dealerCardsSum);
+            MyConsole.LineBreak();
+            game.checkIfWinOrBust();
         }
 
     }
