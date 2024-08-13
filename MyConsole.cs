@@ -2,7 +2,7 @@
 {
     internal class MyConsole
     {
-        public static void WriteDealerCards(string message, string hand)
+        public static void WriteDealerCards(string message, Card hand)
         {
             Console.WriteLine(message + " " + hand);
         }

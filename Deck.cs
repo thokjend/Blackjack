@@ -2,13 +2,13 @@
 {
     internal class Deck
     {
-        private List<string> deck;
+        private List<Card> deck;
         private List<string> suits = new List<string> { "Spades", "Hearts", "Diamonds", "Clubs" };
         private readonly Random _random = new Random();
 
         public Deck()
         {
-            deck = new List<string>();
+            deck = new List<Card>();
             FillDeckAndShuffle();
         }
 
@@ -16,9 +16,10 @@
         {
             foreach (var suit in suits)
             {
-                foreach (var card in Enum.GetNames(typeof(cardValues)))
+                foreach (var cardName in Enum.GetNames(typeof(cardValues)))
                 {
-                    deck.Add($"{card} of {suit}");
+                    var cardValue = (int)Enum.Parse(typeof(cardValues), cardName);
+                    deck.Add(new Card(cardName,cardValue,suit));
                 }
             }
 
@@ -26,16 +27,16 @@
         }
 
 
-        public string Draw()
+        public Card Draw()
         {
             var card = deck.Last();
             deck.RemoveAt(deck.Count - 1);
             return card;
         }
 
-        public List<string> DrawStartingHand()
+        public List<Card> DrawStartingHand()
         {
-            return [Draw(), Draw()];
+            return new List<Card> { Draw(), Draw() };
         }
 
     }

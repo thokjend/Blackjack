@@ -2,15 +2,15 @@
 {
     internal class Hand
     {
-        private readonly List<string> _hand;
+        private readonly List<Card> _hand;
         
-        public Hand(List<string> initialCards)
+        public Hand(List<Card> initialCards)
         {
             _hand = initialCards;
         }
 
 
-        public List<string> GetHand()
+        public List<Card> GetHand()
         {
             return _hand;
         }
@@ -31,12 +31,8 @@
 
             foreach (var card in _hand)
             {
-                var cardValue = card.Split("of");
-                var cardName = cardValue[0].Trim();
-                var isValid = Enum.TryParse<cardValues>(cardName, out cardValues value);
-                if (!isValid) continue;
-                if (value == cardValues.Ace) numAces++;
-                else sum += (int)value;
+                if (card.Name == "Ace") numAces++;
+                else sum += card.Value;
             }
 
             for (int i = 0; i < numAces; i++)

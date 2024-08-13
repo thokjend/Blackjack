@@ -18,7 +18,7 @@
 
         public void ShowStartingHands()
         {
-            MyConsole.WriteDealerCards("Dealer cards: X", _dealerHand.GetHand()[1] );
+            MyConsole.WriteDealerCards("Dealer cards: X", _dealerHand.GetHand()[1]);
             MyConsole.Write("Your cards: ");
             _playerHand.Show();
             MyConsole.LineBreak();
