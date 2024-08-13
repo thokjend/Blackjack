@@ -16,9 +16,9 @@
         {
             foreach (var suit in suits)
             {
-                foreach (var cardName in Enum.GetNames(typeof(cardValues)))
+                foreach (var cardName in Enum.GetNames(typeof(CardValues)))
                 {
-                    var cardValue = (int)Enum.Parse(typeof(cardValues), cardName);
+                    var cardValue = (int)Enum.Parse(typeof(CardValues), cardName);
                     deck.Add(new Card(cardName,cardValue,suit));
                 }
             }

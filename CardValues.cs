@@ -1,6 +1,6 @@
 ﻿namespace Blackjack
 {
-    enum cardValues
+    enum CardValues
     {
         Two = 2,
         Three = 3,
